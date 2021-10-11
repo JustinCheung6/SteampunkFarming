@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class InventoryManager : MonoBehaviour
             if(s == null)
             {
                 GameObject g = Instantiate(new GameObject());
+                g.name = "Inventory Manager";
                 InventoryManager script = g.AddComponent<InventoryManager>();
                 s = script;
             }
@@ -27,6 +29,11 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private GameObject inventoryUI = null;
     [SerializeField] private GameObject toolBarUI = null;
+
+    [SerializeField] private List<Image> toolbarElements = new List<Image>();
+    [SerializeField] private Color selectedColor = Color.white;
+    [SerializeField] private Color defaultColor = Color.gray;
+
     private void Awake()
     {
         if (s == null)
@@ -41,6 +48,13 @@ public class InventoryManager : MonoBehaviour
             inventoryUI.SetActive(false);
         if (toolBarUI != null)
             toolBarUI.SetActive(true);
+
+        for(int i = 0; i < toolbarElements.Count; i++)
+        {
+            toolbarElements[i].color = defaultColor;
+            if (i == currentToolbarSelected)
+                toolbarElements[i].color = selectedColor;
+        }
     }
     private void Update()
     {
@@ -56,17 +70,34 @@ public class InventoryManager : MonoBehaviour
         if (Input.GetAxisRaw("ScrollToolBar") != 0 && toolBarUI.activeSelf)
         {
             if(Input.GetAxisRaw("ScrollToolBar") > 0)
-                currentToolbarSelected = Mathf.Min(currentToolbarSelected + 1, 9);
+            {
+                if (currentToolbarSelected == 9)
+                    ChangeSelectedToolbar(0);
+                else
+                    ChangeSelectedToolbar(currentToolbarSelected + 1);
+            }
             else if (Input.GetAxisRaw("ScrollToolBar") < 0)
-                currentToolbarSelected = Mathf.Max(currentToolbarSelected - 1, 0);
+            {
+                if (currentToolbarSelected == 0)
+                    ChangeSelectedToolbar(9);
+                else
+                    ChangeSelectedToolbar(currentToolbarSelected - 1);
+            }
         }
         //Set Toolbar
         for(int i = 0; i < 10; i++)
         {
             if (Input.GetKeyDown((KeyCode)(48 + i)))
             {
-                currentToolbarSelected = i;
+                ChangeSelectedToolbar(i);
             }
         }
+    }
+
+    private void ChangeSelectedToolbar(int i)
+    {
+        toolbarElements[currentToolbarSelected].color = defaultColor;
+        currentToolbarSelected = i;
+        toolbarElements[i].color = selectedColor;
     }
 }
