@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ItemIDs;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -22,11 +23,15 @@ public class InventoryManager : MonoBehaviour
     }
 
     //Inventory
-    private List<Item> inventoryList = new List<Item>();
+    private Dictionary<ItemID, Item> inventoryList = new Dictionary<ItemID, Item>();
 
     //Toolbar
-    [SerializeField] private int currentToolbarSelected = 0;
+    private int currentToolbarSelected = 0;
 
+    [Header("Item Properties")]
+    [SerializeField] private List<GameObject> itemReferences = new List<GameObject>();
+
+    [Header("UI Properties")]
     [SerializeField] private GameObject inventoryUI = null;
     [SerializeField] private GameObject toolBarUI = null;
 
@@ -54,6 +59,12 @@ public class InventoryManager : MonoBehaviour
             toolbarElements[i].color = defaultColor;
             if (i == currentToolbarSelected)
                 toolbarElements[i].color = selectedColor;
+        }
+
+        foreach(GameObject g in itemReferences)
+        {
+            Item item = Instantiate(g).GetComponent<Item>();
+            inventoryList.Add(item.GetID(), item);
         }
     }
     private void Update()

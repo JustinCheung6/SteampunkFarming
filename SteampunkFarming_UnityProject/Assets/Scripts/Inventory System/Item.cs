@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ItemIDs;
 
-public class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private ItemID itemID = ItemID.undecided;
+    [SerializeField] private Sprite itemSprite = null;
 
-    // Update is called once per frame
-    void Update()
+    private int quantity = 0;
+
+    public ItemID GetID() { return itemID; }
+
+    protected virtual void Awake()
     {
-        
+        quantity = 0;
     }
+    public abstract void Activate();
 }
