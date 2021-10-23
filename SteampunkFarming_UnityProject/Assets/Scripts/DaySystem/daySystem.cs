@@ -17,78 +17,56 @@ public class daySystem : MonoBehaviour
       Saturday,
       Sunday
     } 
+    private string[] dayNames = 
+    {
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+    };
+      private float timer = 00.0f;
+      private string dayName = "";
 
-       public Day currentDay; //Define Day
+      public Day currentDay; //Define Day
 
     // Start is called before the first frame update
     void Start()
     {
        currentDay = Day.Monday; //Day at Start of Game
+       Debug.Log("Monday");
        dayNumber = 1;
     }
-
-    void FixedUpdate ()
+    
+    private void FixedUpdate()
     {
-      if (currentDay == Day.Monday)
+         timer += Time.deltaTime;
+         if(timer >= 2)
          {
-            StartCoroutine (delayPlease ());
+            timer = 0;
+            ChangeDay();
          }
 
-         IEnumerator delayPlease()
+    void ChangeDay()
+     {
+         dayNumber++;
+         if (currentDay == Day.Sunday)
          {
             currentDay = Day.Monday;
-            Debug.Log("Monday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease2());
+         }
+   
+        else
+         {
+              currentDay++;
          }
 
-         IEnumerator delayPlease2()
-         {
-            currentDay = Day.Tuesday;
-            Debug.Log("Tuesday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease3());
-         }
-         
-         IEnumerator delayPlease3()
-         {
-            currentDay = Day.Wednesday;
-            Debug.Log("Wednesday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease4());
-         }
-         
-         IEnumerator delayPlease4()
-         {
-            currentDay = Day.Thursday;
-            Debug.Log("Thursday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease5());
-         }
-        
-         IEnumerator delayPlease5()
-         {
-            currentDay = Day.Friday;
-            Debug.Log("Friday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease6());
-         }
-         
-         IEnumerator delayPlease6()
-         {
-            currentDay = Day.Saturday;
-            Debug.Log("Saturday");
-            yield return new WaitForSeconds (2);
-            StartCoroutine (delayPlease7());
-         }
+         dayName = dayNames[(int)currentDay];
 
-         IEnumerator delayPlease7()
-         {
-            currentDay = Day.Sunday;
-            Debug.Log("Sunday");
-            yield return new WaitForSeconds (2);
-            currentDay = Day.Monday;
-         }
+         Debug.Log(dayName);
+      }   
+
 
       
 
