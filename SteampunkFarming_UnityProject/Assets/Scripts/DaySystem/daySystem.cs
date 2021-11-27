@@ -43,7 +43,7 @@ public class daySystem : MonoBehaviour
     private void FixedUpdate()
     {
          timer += Time.deltaTime;
-         if(timer >= 2)
+         if(timer >= 10)
          {
             timer = 0;
             ChangeDay();
